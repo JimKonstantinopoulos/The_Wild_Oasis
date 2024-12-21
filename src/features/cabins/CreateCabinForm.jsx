@@ -48,8 +48,9 @@ const Error = styled.span`
 
 function CreateCabinForm() {
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset } = useForm();
-  const { isLoading, mutate } = useMutation({
+  const { register, handleSubmit, reset, getValues, formState } = useForm();
+  const { errors } = formState;
+  const { isLoading: isCreating, mutate } = useMutation({
     mutationFn: insertCabin,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -65,21 +66,58 @@ function CreateCabinForm() {
     mutate(data);
   }
 
+  function onError(error) {
+    console.log(error);
+  }
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit, onError)}>
       <FormRow>
         <Label htmlFor="name">Cabin name</Label>
-        <Input type="text" id="name" {...register("name")} />
+        <Input
+          type="text"
+          id="name"
+          {...register("name", {
+            required: "This filed is required.",
+          })}
+          disabled={isCreating}
+        />
+        {errors?.name?.message && <Error>{errors.name.message}</Error>}
       </FormRow>
 
       <FormRow>
         <Label htmlFor="maxCapacity">Maximum capacity</Label>
-        <Input type="number" id="maxCapacity" {...register("maxCapacity")} />
+        <Input
+          type="number"
+          id="maxCapacity"
+          {...register("maxCapacity", {
+            required: "This filed is required.",
+            min: {
+              value: 1,
+              message: "Capacity should be at least 1",
+            },
+          })}
+          disabled={isCreating}
+        />
+        {errors?.maxCapacity?.message && (
+          <Error>{errors.maxCapacity.message}</Error>
+        )}
       </FormRow>
 
       <FormRow>
         <Label htmlFor="regularPrice">Regular price</Label>
-        <Input type="number" id="regularPrice" {...register("regularPrice")} />
+        <Input
+          type="number"
+          id="regularPrice"
+          {...register("regularPrice", {
+            required: "This filed is required.",
+          })}
+          disabled={isCreating}
+          min="0"
+        />
+        {errors?.regularPrice?.message && (
+          <Error>{errors.regularPrice.message}</Error>
+        )}
       </FormRow>
 
       <FormRow>
@@ -88,8 +126,17 @@ function CreateCabinForm() {
           type="number"
           id="discount"
           defaultValue={0}
-          {...register("discount")}
+          {...register("discount", {
+            required: "This filed is required.",
+            validate: (value) =>
+              value === "0" ||
+              value <= getValues().regularPrice ||
+              "Discount should be less than regular price",
+          })}
+          disabled={isCreating}
+          min="0"
         />
+        {errors?.discount?.message && <Error>{errors.discount.message}</Error>}
       </FormRow>
 
       <FormRow>
@@ -98,26 +145,31 @@ function CreateCabinForm() {
           type="number"
           id="description"
           defaultValue=""
-          {...register("description")}
+          {...register("description", {
+            required: "This filed is required.",
+          })}
+          disabled={isCreating}
         />
+        {errors?.description?.message && (
+          <Error>{errors.description.message}</Error>
+        )}
       </FormRow>
 
       <FormRow>
         <Label htmlFor="image">Cabin photo</Label>
-        <FileInput id="image" accept="image/*" />
+        <FileInput id="image" accept="image/*" disabled={isCreating} />
       </FormRow>
 
       <FormRow>
-        {/* type is an HTML attribute! */}
         <Button
           variation="secondary"
           size="medium"
           type="reset"
-          disabled={isLoading}
+          disabled={isCreating}
         >
           Cancel
         </Button>
-        <Button variation="primary" size="medium" disabled={isLoading}>
+        <Button variation="primary" size="medium" disabled={isCreating}>
           Add cabin
         </Button>
       </FormRow>
