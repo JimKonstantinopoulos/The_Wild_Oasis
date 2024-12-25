@@ -1,6 +1,6 @@
 # The Wild Oasis
 
-Single page application to create, update or delete cabins where a user can rent for the correct price. Bookings are created and managed via the as well as statistics for each booking can be shown at the 
+Single page application to create, update or delete cabins where a user can rent for the correct price. Bookings are created and managed via the app as well as statistics for each booking can be shown at the header's dashboard.
 
 # Languages
 <ol>
