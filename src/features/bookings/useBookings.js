@@ -17,15 +17,20 @@ export function useBookings() {
   const [field, direction] = sortByRow.split("-");
   const sortBy = { field, direction };
 
+  //PAGINATION
+  const curPage = !searchParams.get("page")
+    ? 1
+    : Number(searchParams.get("page"));
+
   const {
     isLoading,
-    data: bookings,
+    data: { data: bookings, count } = {},
     error,
   } = useQuery({
     //Now the useQuery will trigger a refetch of data also if the filter changes, like the dependency array of useEffect
-    queryKey: ["bookings", filter, sortBy],
-    queryFn: () => getBookings({ filter, sortBy }),
+    queryKey: ["bookings", filter, sortBy, curPage],
+    queryFn: () => getBookings({ filter, sortBy, curPage }),
   });
 
-  return { isLoading, bookings, error };
+  return { isLoading, bookings, count, error };
 }
