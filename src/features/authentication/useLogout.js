@@ -1,0 +1,19 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { logout as logoutApi } from "../../services/apiAuth";
+import { useNavigate } from "react-router-dom";
+
+export function useLogout() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { isLoading, mutate: logout } = useMutation({
+    mutationFn: logoutApi,
+    onSuccess: () => {
+      //User may be removed from supabase server and localstorage but is still in the React Query cache, so running removeQueries() will remove everything from cache.
+      queryClient.removeQueries();
+      navigate("/login", { replace: true });
+    },
+  });
+
+  return { isLoading, logout };
+}

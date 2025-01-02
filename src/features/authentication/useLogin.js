@@ -8,7 +8,7 @@ export function useLogin() {
 
   const { isLoading, mutate: login } = useMutation({
     mutationFn: ({ email, password }) => loginApi({ email, password }),
-    onSuccess: () => navigate("/dashboard"),
+    onSuccess: () => navigate("/dashboard", { replace: true }),
     onError: () => toast.error("Provided email or password are incorrect"),
   });
 
