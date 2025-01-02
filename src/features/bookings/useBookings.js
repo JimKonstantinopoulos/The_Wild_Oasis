@@ -34,6 +34,7 @@ export function useBookings() {
     queryFn: () => getBookings({ filter, sortBy, curPage }),
   });
 
+  //Use queryClient to prefetch previous and next pages of the current page to avoid momentary loading spinner when using pagination
   const pageCount = Math.ceil(count / PAGE_SIZE);
 
   if (curPage < pageCount)
