@@ -78,10 +78,12 @@ function SignupForm() {
 
       <FormRow>
         <Button
+          type="reset"
           variation="secondary"
           size="medium"
-          type="reset"
           disabled={isLoading}
+          //Add reset from React Form so that it clears the Form's error messages as well.
+          onClick={reset}
         >
           Cancel
         </Button>
