@@ -31,8 +31,6 @@ function SalesChart({ bookings, numDays }) {
     end: new Date(),
   });
 
-  console.log(allDates);
-
   const data = allDates.map((date) => {
     return {
       label: format(date, "MMM dd"),
