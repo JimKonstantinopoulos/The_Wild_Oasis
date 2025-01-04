@@ -1,6 +1,6 @@
 # The Wild Oasis
 
-Single page application to create, update or delete cabins where a user can rent for the correct price. Bookings are created and managed via the app as well as statistics for each booking can be shown at the header's dashboard.
+Web application where an employee of "the wild oasis" Airbnb campus can operate on cabins, bookings, site settings for price, guests, bookings and cabins configurations, as well as account settings for every user. Guests are being checked in and out via the site as well as corresponding statistics are displayed on the dashboard referring to the campus's progress. This site also uses supabase to support the backend data storing. A new user (new employee) is able to sign up from inside the app, meaning that another employee must already have an account to sign the new user up. For extra safety precautions the assigned email will receive an email confirmation message. (Credentials of an already active profile ==> email: weyay65046@chansd.com password: 12345678) 
 
 # Languages
 <ol>
@@ -19,6 +19,7 @@ Single page application to create, update or delete cabins where a user can rent
 # State Managment
 <ol>
   <li>React Query</li>
+  <li>Context API</li>
 </ol>
 
 # Build Tools and Package Managers
